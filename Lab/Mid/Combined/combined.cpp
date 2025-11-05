@@ -36,7 +36,7 @@ void checkComment(string str) {
 //Option 4
 bool isIdentifier(string str) {
     if (str.empty()) return false;  
-
+    
     char first = str[0];
     if (!((first >= 'A' && first <= 'Z') || 
           (first >= 'a' && first <= 'z') || 
