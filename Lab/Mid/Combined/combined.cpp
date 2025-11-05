@@ -35,9 +35,8 @@ void checkComment(string str) {
 
 //Option 4
 bool isIdentifier(string str) {
-    if (str.empty()) return false;  // Empty string is not a valid identifier
+    if (str.empty()) return false;  
 
-    // Check first character: must be alphabet or underscore
     char first = str[0];
     if (!((first >= 'A' && first <= 'Z') || 
           (first >= 'a' && first <= 'z') || 
@@ -45,7 +44,6 @@ bool isIdentifier(string str) {
         return false;
     }
 
-    // Check remaining characters: must be alphanumeric or underscore
     for (int i = 1; i < str.length(); i++) {
         char ch = str[i];
         if (!((ch >= 'A' && ch <= 'Z') || 
@@ -110,7 +108,6 @@ void concatenateStrings() {
     string firstName, lastName, fullName;
 
     cout << "Enter your first name: ";
-    cin.ignore();  // clear newline from previous input
     getline(cin, firstName);
 
     cout << "Enter your last name: ";
@@ -121,7 +118,6 @@ void concatenateStrings() {
     cout << "Full name = " << fullName << endl;
 }
 
-//main function using switch case
 int main() {
     int choice;
     string input;
