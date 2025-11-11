@@ -1,36 +1,100 @@
 #include <iostream>
+#include <limits>
 using namespace std;
 
 //Option 1
 bool isNumericConstant(string str) {
+    int dot = 0;
     for (int i = 0; str[i] != '\0'; i++) {
-        if (str[i] < '0' || str[i] > '9')
-            return false;
+        if (str[i] == '-') {
+            if (i != 0) return false;
+        }
+        else if (str[i] == '.') {
+            dot++;
+            if (dot > 1) return false;
+        }
+        else if (str[i] < '0' || str[i] > '9') {
+            return false; 
+        }
     }
+    if (str == "-" || str == "." || str == "-.") return false;
+
     return true;
 }
+
 
 //Option 2
 void findOperators(string str) {
     cout << "Input expression: " << str << endl;
     cout << "Operators found: " << endl;
+
+    bool plus = false, minus = false, mul = false, div = false, mod = false, eq = false;
+
     for (int i = 0; str[i] != '\0'; i++) {
-        if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/' || str[i] == '%' || str[i] == '=') {
-            cout << "Operator: " << str[i] << endl;
+        if (str[i] == '+' && !plus) {
+            cout << "Operator: +" << endl;
+            plus = true;
+        }
+        else if (str[i] == '-' && !minus) {
+            cout << "Operator: -" << endl;
+            minus = true;
+        }
+        else if (str[i] == '*' && !mul) {
+            cout << "Operator: *" << endl;
+            mul = true;
+        }
+        else if (str[i] == '/' && !div) {
+            cout << "Operator: /" << endl;
+            div = true;
+        }
+        else if (str[i] == '%' && !mod) {
+            cout << "Operator: %" << endl;
+            mod = true;
+        }
+        else if (str[i] == '=' && !eq) {
+            cout << "Operator: =" << endl;
+            eq = true;
         }
     }
 }
 
-//Option 3
-void checkComment(string str) {
-    cout << "Input: " << str << endl;
-    if (str.length() >= 2 && str[0] == '/' && str[1] == '/')
-        cout << "This is a single line comment." << endl;
-    else if (str.length() >= 4 && str[0] == '/' && str[1] == '*' && 
-        str[str.length() - 2] == '*' && str[str.length() - 1] == '/')
-        cout << "This is a multi-line comment." << endl;
-    else
-        cout << "This is not a comment." << endl;
+
+//Option 3 
+void checkComment() {
+    string line, str = "";
+    cout << "Enter comment (or expression):" << endl;
+
+    if (!getline(cin, line)) {
+        cout << "\nNo input received." << endl;
+        return;
+    }
+    str = line;
+
+    if (str.rfind("//", 0) == 0) {
+        cout << "\nInput:\n" << str << endl;
+        cout << "This is a single-line comment." << endl;
+        return;
+    }
+
+    if (str.find("/*") != string::npos) {
+        if (str.find("*/") != string::npos) {
+            cout << "\nInput:\n" << str << endl;
+            cout << "This is a multi-line comment." << endl;
+            return;
+        }
+
+        while (getline(cin, line)) {
+            str += "\n" + line;
+            if (line.find("*/") != string::npos) {
+                cout << "\nInput:\n" << str << endl;
+                cout << "This is a multi-line comment." << endl;
+                return;
+            }
+        }
+    }
+    
+    cout << "\nInput:\n" << str << endl;
+    cout << "This is not a comment." << endl;
 }
 
 //Option 4
@@ -122,7 +186,6 @@ int main() {
     int choice;
     string input;
 
-    cout << "========= MENU =========" << endl;
     cout << "1. Check Numeric Constant" << endl;
     cout << "2. Check Operators" << endl;
     cout << "3. Check Comment Line(s)" << endl;
@@ -130,10 +193,12 @@ int main() {
     cout << "5. Find Average of Array" << endl;
     cout << "6. Find Min and Max of Array" << endl;
     cout << "7. Concatenate Strings" << endl;
-    cout << "========================" << endl;
 
     cout << "Enter your choice (1-7): ";
     cin >> choice;
+    if (choice == 3 || choice == 7) { 
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+    }
 
     switch (choice) {
         case 1:
@@ -152,10 +217,7 @@ int main() {
             break;
 
         case 3:
-            cout << "Enter a line: ";
-            cin.ignore();
-            getline(cin, input);
-            checkComment(input);
+           checkComment();
             break;
 
         case 4:
